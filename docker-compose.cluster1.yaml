@@ -1,0 +1,54 @@
+services:
+  db-node-1:
+    image: postgres:16-alpine
+    container_name: c1-db-1
+    environment:
+      POSTGRES_DB: db1
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 0000
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init-scripts/db1-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - storage-net
+
+  db-node-2:
+    image: postgres:16-alpine
+    container_name: c1-db-2
+    environment:
+      POSTGRES_DB: db2
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 0000
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./init-scripts/db2-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - storage-net
+
+  db-replica:
+    image: postgres:16-alpine
+    container_name: c1-db-replica
+    environment:
+      POSTGRES_DB: db1_replica
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 0000
+      PGPASSWORD: "0000"
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./scripts/replication.sh:/scripts/replication.sh:ro
+    networks:
+      - storage-net
+    entrypoint:
+      - sh
+      - -c
+      - |
+        tr -d '\r' < /scripts/replication.sh > /tmp/run.sh
+        chmod +x /tmp/run.sh
+        exec /tmp/run.sh
+
+networks:
+  storage-net:
+    driver: bridge

@@ -1,0 +1,22 @@
+services:
+  gateway-node-1:
+    image: nginx:alpine
+    container_name: c4-gateway-1
+    networks:
+      - gateway-net
+
+  gateway-node-2:
+    image: nginx:alpine
+    container_name: c4-gateway-2
+    networks:
+      - gateway-net
+
+  gateway-node-3:
+    image: nginx:alpine
+    container_name: c4-gateway-3
+    networks:
+      - gateway-net
+    
+networks:
+  gateway-net:
+    driver: bridge

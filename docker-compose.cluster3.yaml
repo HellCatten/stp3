@@ -1,0 +1,25 @@
+services:
+  worker-node-1:
+    image: alpine:latest
+    container_name: c3-worker
+    command: tail -f /dev/null
+    networks:
+      - worker-net
+
+  worker-node-2:
+    image: alpine:latest
+    container_name: c3-worker-2
+    command: tail -f /dev/null
+    networks:
+      - worker-net
+  
+  wokrer-node-3:
+    image: alpine:latest
+    container_name: c3-worker-3
+    command: tail -f /dev/null
+    networks:
+      - worker-net
+
+networks:
+  worker-net:
+    driver: bridge

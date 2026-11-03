@@ -1,0 +1,22 @@
+services:
+  broker-node-1:
+    image: redis:alpine
+    container_name: c2_broker-1
+    networks:
+      - broker-net
+
+  broker-node-2:
+    image: redis:alpine
+    container_name: c2_broker-2
+    networks:
+      - broker-net
+
+  broker-node-3:
+    image: redis:alpine
+    container_name: c2_broker-3
+    networks:
+      - broker-net
+
+networks:
+  broker-net:
+    driver: bridge
